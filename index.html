@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Arraiá da Evolution Fitness Studio | Três Rios - RJ</title>
+  <meta name="description" content="Confirme sua presença e escolha um item para a Festa Junina da Evolution Fitness Studio, Três Rios - RJ." />
+  <meta name="theme-color" content="#0B0B0C" />
+
+  <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="./icon.svg" />
+  <link rel="manifest" href="./manifest.json" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+
+  <div class="app">
+
+    <!-- ============ HEADER ============ -->
+    <header class="topbar">
+      <div class="topbar-content">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">EF</span>
+          <div class="brand-text">
+            <strong>Evolution Fitness Studio</strong>
+            <small>Três Rios &middot; RJ</small>
+          </div>
+        </div>
+        <button type="button" id="adminOpenBtn" class="admin-link">Área administrativa</button>
+      </div>
+      <div class="bunting" aria-hidden="true"></div>
+    </header>
+
+    <main>
+
+      <!-- ============ HERO ============ -->
+      <section class="hero">
+        <div class="hero-visual" id="heroVisual">
+          <picture>
+            <source srcset="./hero-banner.webp" type="image/webp" />
+            <img
+              src="./hero-banner.jpg"
+              alt="Mascote da Evolution Fitness Studio em traje junino, ao lado de uma placa de madeira com os dizeres Arraiá da Evolution Fitness, cercada por bandeirinhas e luzes de festa"
+              class="hero-visual-img"
+              loading="eager"
+              fetchpriority="high"
+              width="1479"
+              height="1063"
+            />
+          </picture>
+        </div>
+        <p class="eyebrow">Festa Junina</p>
+        <h1>Arraiá da Evolution Fitness</h1>
+        <p class="hero-text">Confirme sua presença e escolha um item para contribuir com nossa festa.</p>
+      </section>
+
+      <!-- ============ FORMULÁRIO DE CONFIRMAÇÃO ============ -->
+      <section class="card form-card" id="participantSection" aria-labelledby="formTitle">
+        <h2 id="formTitle">Confirmação de presença</h2>
+
+        <form id="participantForm" novalidate>
+
+          <div class="field">
+            <label for="fullName">Nome completo</label>
+            <input type="text" id="fullName" name="fullName" autocomplete="name" required minlength="3" placeholder="Digite seu nome completo" />
+          </div>
+
+          <div class="field">
+            <label for="phone">Telefone</label>
+            <input type="tel" id="phone" name="phone" autocomplete="tel" required placeholder="(24) 90000-0000" />
+          </div>
+
+          <fieldset class="field field-radio-group">
+            <legend>Participará?</legend>
+            <div class="radio-options">
+              <label class="radio-pill">
+                <input type="radio" name="attending" value="sim" required />
+                <span>Sim</span>
+              </label>
+              <label class="radio-pill">
+                <input type="radio" name="attending" value="nao" />
+                <span>Não</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="field" id="companionsField">
+            <label for="companions">Quantidade de acompanhantes</label>
+            <input type="number" id="companions" name="companions" min="0" max="20" step="1" value="0" inputmode="numeric" />
+          </div>
+
+          <div class="field">
+            <label for="note">Observação <span class="optional">(opcional)</span></label>
+            <textarea id="note" name="note" rows="3" maxlength="240" placeholder="Alguma restrição alimentar, horário de chegada, etc."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block" id="submitBtn">Confirmar presença</button>
+        </form>
+
+        <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+      </section>
+
+      <!-- ============ ITENS ============ -->
+      <section class="items-section" id="itemsSection" hidden>
+        <div class="items-heading">
+          <h2>Escolha seu item</h2>
+          <p>Você pode escolher apenas um item. Ao selecionar, ele fica reservado em seu nome.</p>
+        </div>
+        <div class="items-grid" id="itemsGrid"></div>
+      </section>
+
+      <!-- ============ MENSAGEM PARA QUEM NÃO VAI ============ -->
+      <section class="not-attending-note" id="notAttendingNote" hidden>
+        <p>Sentiremos sua falta no arraiá! Se mudar de ideia, é só atualizar sua confirmação acima.</p>
+      </section>
+
+    </main>
+
+    <footer class="app-footer">
+      <p>Evolution Fitness Studio &middot; Três Rios, RJ</p>
+    </footer>
+  </div>
+
+  <!-- ============ MODAL: LOGIN ADMINISTRATIVO ============ -->
+  <div class="modal-overlay" id="adminLoginOverlay" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="adminLoginTitle">
+      <h2 id="adminLoginTitle">Área administrativa</h2>
+      <form id="adminLoginForm">
+        <div class="field">
+          <label for="adminPasswordInput">Senha de acesso</label>
+          <input type="password" id="adminPasswordInput" required autocomplete="current-password" />
+        </div>
+        <p class="field-error" id="adminLoginError" hidden>Senha incorreta. Tente novamente.</p>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" id="adminLoginCancel">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Entrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ MODAL: PAINEL ADMINISTRATIVO ============ -->
+  <div class="modal-overlay" id="adminPanelOverlay" hidden>
+    <div class="modal modal-large" role="dialog" aria-modal="true" aria-labelledby="adminPanelTitle">
+      <div class="modal-header">
+        <h2 id="adminPanelTitle">Painel administrativo</h2>
+        <button type="button" class="icon-btn" id="adminCloseBtn" aria-label="Fechar painel">&times;</button>
+      </div>
+
+      <nav class="admin-tabs" id="adminTabs">
+        <button type="button" class="tab-btn active" data-tab="dashboard">Dashboard</button>
+        <button type="button" class="tab-btn" data-tab="items">Itens</button>
+        <button type="button" class="tab-btn" data-tab="participants">Participantes</button>
+      </nav>
+
+      <div class="admin-tab-content" id="tabDashboard" data-tab-panel="dashboard"></div>
+
+      <div class="admin-tab-content" id="tabItems" data-tab-panel="items" hidden>
+        <form id="adminItemForm" class="admin-inline-form">
+          <input type="hidden" id="adminItemEditId" value="" />
+          <div class="field">
+            <label for="adminItemName">Nome do item</label>
+            <input type="text" id="adminItemName" required placeholder="Ex: Refrigerante" />
+          </div>
+          <div class="field">
+            <label for="adminItemNeeded">Quantidade necessária</label>
+            <input type="number" id="adminItemNeeded" required min="1" step="1" value="1" />
+          </div>
+          <div class="admin-inline-actions">
+            <button type="button" class="btn btn-ghost" id="adminItemCancelEdit" hidden>Cancelar edição</button>
+            <button type="submit" class="btn btn-primary" id="adminItemSubmitBtn">Adicionar item</button>
+          </div>
+        </form>
+        <div class="admin-list" id="adminItemsList"></div>
+      </div>
+
+      <div class="admin-tab-content" id="tabParticipants" data-tab-panel="participants" hidden>
+        <div class="admin-toolbar">
+          <input type="search" id="adminParticipantSearch" placeholder="Pesquisar por nome ou telefone" />
+          <div class="admin-toolbar-actions">
+            <button type="button" class="btn btn-ghost" id="exportCsvBtn">Exportar CSV</button>
+            <button type="button" class="btn btn-ghost" id="printListBtn">Imprimir lista</button>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Telefone</th>
+                <th>Presença</th>
+                <th>Acomp.</th>
+                <th>Item</th>
+                <th>Observação</th>
+                <th class="col-actions">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="adminParticipantsBody"></tbody>
+          </table>
+          <p class="empty-state" id="adminParticipantsEmpty" hidden>Nenhum participante encontrado.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MODAL: EDITAR PARTICIPANTE ============ -->
+  <div class="modal-overlay" id="editParticipantOverlay" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="editParticipantTitle">
+      <div class="modal-header">
+        <h2 id="editParticipantTitle">Editar participante</h2>
+        <button type="button" class="icon-btn" id="editParticipantCloseBtn" aria-label="Fechar">&times;</button>
+      </div>
+      <form id="editParticipantForm">
+        <input type="hidden" id="editParticipantId" />
+        <div class="field">
+          <label for="editParticipantName">Nome completo</label>
+          <input type="text" id="editParticipantName" required minlength="3" />
+        </div>
+        <div class="field">
+          <label for="editParticipantPhone">Telefone</label>
+          <input type="tel" id="editParticipantPhone" required />
+        </div>
+        <div class="field">
+          <label for="editParticipantAttending">Participará?</label>
+          <select id="editParticipantAttending">
+            <option value="sim">Sim</option>
+            <option value="nao">Não</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="editParticipantCompanions">Acompanhantes</label>
+          <input type="number" id="editParticipantCompanions" min="0" max="20" step="1" />
+        </div>
+        <div class="field">
+          <label for="editParticipantItem">Item escolhido</label>
+          <select id="editParticipantItem"></select>
+        </div>
+        <div class="field">
+          <label for="editParticipantNote">Observação</label>
+          <textarea id="editParticipantNote" rows="3" maxlength="240"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" id="editParticipantCancel">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Salvar alterações</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Área de impressão (populada dinamicamente, visível só no @media print) -->
+  <div id="printArea" class="print-area"></div>
+
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <script src="./script.js"></script>
+</body>
+</html>
